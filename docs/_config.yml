@@ -13,8 +13,12 @@ description: "One or two sentences describing the paper. Used by search engines 
 #   Project site   https://<user>.github.io/<repo>/   url: https://<user>.github.io   baseurl: "/<repo>"
 #   User site      https://<user>.github.io/          url: https://<user>.github.io   baseurl: ""
 #   Custom domain  https://example.com/               url: https://example.com        baseurl: ""
-url: "https://your-github-username.github.io"
-baseurl: "/your-repo-name"
+
+
+url: "https://parapet-research.github.io"  #-------change this to your github account----
+baseurl: "/project_name--template"         #------change this to your repo name------
+
+
 
 # Image used when the page is shared on social media. 1200x630 works best.
 # Lives in assets/ , so this points at assets/figures/social-preview.jpg
