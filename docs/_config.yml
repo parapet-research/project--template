@@ -16,7 +16,7 @@ description: "One or two sentences describing the paper. Used by search engines 
 
 
 url: "https://parapet-research.github.io"  #-------change this to your github account----
-baseurl: "/project_name--template"         #------change this to your repo name------
+baseurl: "/project--template"         #------change this to your repo name------
 
 
 
