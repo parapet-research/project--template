@@ -1,0 +1,8 @@
+{%- assign t = site.project.teaser -%}
+{%- if t and t.src and t.src != "" -%}
+<section class="teaser">
+  <div class="wrap">
+    {%- include figure.html src=t.src alt=t.alt caption=t.caption width="wide" plain=t.plain -%}
+  </div>
+</section>
+{%- endif -%}

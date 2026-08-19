@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Project Name: A Short Descriptive Subtitle</title>
+<meta name="description" content="One or two sentences describing the paper. Used by search engines and for link previews on X, LinkedIn and Slack."><meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)"><meta property="og:type" content="website">
+<meta property="og:title" content="Project Name: A Short Descriptive Subtitle">
+<meta property="og:description" content="One or two sentences describing the paper. Used by search engines and for link previews on X, LinkedIn and Slack.">
+<meta property="og:url" content="http://localhost:4000/your-repo-name/">
+<meta property="og:image" content="http://localhost:4000/your-repo-name/assets/figures/social-preview.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:4000/your-repo-name/assets/figures/social-preview.jpg">
+<meta name="twitter:title" content="Project Name: A Short Descriptive Subtitle">
+<meta name="twitter:description" content="One or two sentences describing the paper. Used by search engines and for link previews on X, LinkedIn and Slack.">
+<link rel="canonical" href="http://localhost:4000/your-repo-name/"><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": "Project Name",
+  "description": "One or two sentences describing the paper. Used by search engines and for link previews on X, LinkedIn and Slack.",
+  "author": [{"@type": "Person", "name": "First Author"},{"@type": "Person", "name": "Second Author"},{"@type": "Person", "name": "Third Author"},{"@type": "Person", "name": "Senior Author"}],
+  "image": "http://localhost:4000/your-repo-name/assets/figures/social-preview.jpg"
+}
+</script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&display=swap">
+
+<link rel="stylesheet" href="/your-repo-name/assets/css/main.css"><noscript><style>
+  .topbar { position: sticky; transform: none; opacity: 1; visibility: visible; pointer-events: auto; }
+</style></noscript><script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+        onload="renderPageMath();"></script>
+<script>
+  function renderPageMath() {
+    document.querySelectorAll('.kdmath').forEach(function (el) {
+      var tex = el.textContent.trim().replace(/^\$\$?/, '').replace(/\$\$?$/, '');
+      try {
+        katex.render(tex, el, { displayMode: el.tagName === 'DIV', throwOnError: false });
+      } catch (e) {}
+    });
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '$', right: '$', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      ignoredClasses: ['katex'],
+      throwOnError: false
+    });
+  }
+</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="topbar is-hidden" id="topbar">
+  <div class="topbar__inner">
+
+    <a class="topbar__brand" href="#top">
+      <span class="topbar__brand-text">Project Name</span>
+    </a>
+
+    <nav class="topbar__nav" aria-label="Sections">
+      <a href="#overview" data-nav-target="overview">Overview</a>
+      <a href="#method" data-nav-target="method">Method</a>
+      <a href="#results" data-nav-target="results">Results</a>
+      <a href="#ablations" data-nav-target="ablations">Ablations</a>
+      <a href="#bibtex" data-nav-target="bibtex">BibTeX</a>
+    </nav>
+
+    <div class="topbar__actions"><button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark theme">
+        <span class="icon-btn__sun"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span>
+        <span class="icon-btn__moon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg></span>
+      </button>
+
+      <button class="icon-btn topbar__menu" id="menu-toggle" type="button" aria-label="Open section menu" aria-expanded="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+      </button>
+    </div>
+
+  </div>
+  <div class="topbar__progress" id="progress"></div>
+</header>
+
+
+  <main id="main">
+    <section class="hero" id="top">
+  <div class="wrap">
+    <p class="hero__venue">Preprint · 2026</p>
+
+    <h1 class="hero__title">Project Name</h1>
+    <p class="hero__tagline">A single clear sentence saying what the paper does and why it matters.
+</p><p class="authors authors--text"><a href="https://example.com" target="_blank" rel="noopener">First Author</a><sup class="author__mark">1*</sup><span class="authors__sep">, </span><span>Second Author</span><sup class="author__mark">1,2*</sup><span class="authors__sep">, </span><span>Third Author</span><sup class="author__mark">2</sup><span class="authors__sep">, </span><span>Senior Author</span><sup class="author__mark">1</sup></p>
+    <p class="affils"><span class="affil"><sup>1</sup><a href="https://example.edu" target="_blank" rel="noopener">Your University</a></span><span class="affil"><sup>2</sup><a href="https://example.org" target="_blank" rel="noopener">Partner Institute</a></span></p>
+    <p class="authors__note"><sup>*</sup>Equal contribution</p>
+    <div class="hero__links">
+      <a class="btn btn--primary" href="#">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6M9 17h6"/></svg><span>Paper</span>
+      </a>
+      <a class="btn " href="#">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5l14 15M19 4.5l-14 15"/></svg><span>arXiv</span>
+      </a>
+      <a class="btn " href="#">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.71-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.57 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.91-1.33 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .27.18.6.69.49A10.06 10.06 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg><span>Code</span>
+      </a>
+      <a class="btn " href="#bibtex">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h4v4a4 4 0 0 1-4 4"/><path d="M15 7h4v4a4 4 0 0 1-4 4"/></svg><span>BibTeX</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+    <section class="teaser">
+  <div class="wrap"><figure class="fig fig--wide">
+  <div class="fig__media"><img src="/your-repo-name/assets/figures/teaser.jpg" alt="Describe the figure for screen readers and for when the image fails to load." loading="lazy" decoding="async"
+           data-zoomable></div>
+  <figcaption>A short caption. <strong>Bold the takeaway</strong> so a skimming reader gets it in one line.
+</figcaption>
+</figure>
+</div>
+</section>
+
+    <div class="prose">
+      <h2 id="overview">Abstract</h2>
+
+<p>Paste your abstract here, as one or two paragraphs. Keep it to the version you
+submitted — the page is not the place to rewrite the paper, and readers arriving
+from a search result want to confirm quickly that they are in the right place.</p>
+
+<div class="stats">
+  <div class="stat">
+    <span class="stat__value">0.00</span>
+    <span class="stat__label">Metric on Dataset</span><span class="stat__note">down from 00.0 clean</span>
+  </div>
+  <div class="stat">
+    <span class="stat__value">4×</span>
+    <span class="stat__label">better than prior best</span>
+  </div>
+  <div class="stat">
+    <span class="stat__value">8</span>
+    <span class="stat__label">models evaluated</span>
+  </div>
+</div>
+
+<h2 id="highlights">What’s new</h2>
+
+<ul class="cards">
+  <li class="card">
+    <h3 class="card__title">First card</h3>
+    <p class="card__text">One or two sentences on what is new. Three or four cards works best.
+</p>
+  </li>
+  <li class="card">
+    <h3 class="card__title">Second card</h3>
+    <p class="card__text">Say the thing a reviewer would want to know, not the thing that sounds impressive.
+</p>
+  </li>
+  <li class="card">
+    <h3 class="card__title">Third card</h3>
+    <p class="card__text">Numbers land harder than adjectives. <em>Markdown</em> works in here.
+</p>
+  </li>
+  <li class="card">
+    <h3 class="card__title">Fourth card</h3>
+    <p class="card__text">Delete any you do not need — the grid reflows on its own.
+</p>
+  </li>
+</ul>
+
+<h2 id="method">Method</h2>
+
+<p>Explain the approach in the order a reader needs it, not the order you
+discovered it. One figure near the top of this section carries more weight than
+three paragraphs before it.</p>
+
+<figure class="fig fig--page fig--pad">
+  <div class="fig__media"><img src="/your-repo-name/assets/figures/method.png" alt="Describe the diagram: what goes in, what comes out, what the arrows mean." loading="lazy" decoding="async" data-zoomable="" /></div>
+  <figcaption><strong>Method overview.</strong> State the takeaway in the first clause, then explain the parts.
+</figcaption>
+</figure>
+
+<p>Inline math is written <code class="language-plaintext highlighter-rouge">$\ell_\infty$</code> and renders as $\ell_\infty$. Display
+math goes on its own lines:</p>
+
+<div class="kdmath">$$
+\delta^{\star} = \operatorname*{arg\,min}_{\|\delta\|_\infty \le \epsilon} \; \mathcal{L}(x + \delta)
+$$</div>
+
+<p>Set <code class="language-plaintext highlighter-rouge">math: false</code> in <code class="language-plaintext highlighter-rouge">_config.yml</code> if your page has no equations.</p>
+
+<h3 id="a-subsection">A subsection</h3>
+
+<p>Use <code class="language-plaintext highlighter-rouge">###</code> for subsections. They pick up an anchor automatically, and you can
+give one an explicit id like this: <code class="language-plaintext highlighter-rouge">### Deformable attention {#deformable}</code>.</p>
+
+<h2 id="results">Results</h2>
+
+<p>Markdown tables are styled for you. Right-align numeric columns with <code class="language-plaintext highlighter-rouge">---:</code> so
+the digits line up, and bold the winning entry.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Method</th>
+      <th style="text-align: left">Venue</th>
+      <th style="text-align: right">Metric ↓</th>
+      <th style="text-align: right">Other ↑</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Baseline A</td>
+      <td style="text-align: left">CVPR 2024</td>
+      <td style="text-align: right">27.2</td>
+      <td style="text-align: right">47.2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Baseline B</td>
+      <td style="text-align: left">ICCV 2025</td>
+      <td style="text-align: right">12.7</td>
+      <td style="text-align: right">42.3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Strongest prior</td>
+      <td style="text-align: left">NeurIPS 2025</td>
+      <td style="text-align: right">4.1</td>
+      <td style="text-align: right">7.3</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Ours</strong></td>
+      <td style="text-align: left">—</td>
+      <td style="text-align: right"><strong>0.97</strong></td>
+      <td style="text-align: right"><strong>1.44</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Add a caption on the line right after the table by ending it with <code class="language-plaintext highlighter-rouge">{: .caption}</code>:</p>
+
+<p class="caption"><strong>Table 1.</strong> Comparison against prior work. Lower is better for the third column.</p>
+
+<figure class="fig fig--wide">
+  <div class="fig__media"><img src="/your-repo-name/assets/figures/results.png" alt="Describe what the reader should see in this figure." loading="lazy" decoding="async" data-zoomable="" /></div>
+  <figcaption><strong>Qualitative results.</strong> Point at what to look at — readers will not find it on their own.
+</figcaption>
+</figure>
+
+<h2 id="ablations">Ablations</h2>
+
+<p>Short sections with one table or figure each read far better than a single long
+one. Anything you would put in a supplementary can live here too.</p>
+
+<figure class="fig fig--text">
+  <div class="fig__media"><img src="/your-repo-name/assets/figures/ablation.png" alt="Plot of the metric against the two hyperparameters." loading="lazy" decoding="async" data-zoomable="" /></div>
+  <figcaption><strong>Sweeps.</strong> One sentence on the trend, one on why it matters.
+</figcaption>
+</figure>
+
+<div class="callout">
+  <p>A callout for a caveat, a note about a released checkpoint, or anything you want
+set apart from the running text. The <code class="language-plaintext highlighter-rouge">markdown="1"</code> attribute is what lets you
+write markdown inside an HTML block.</p>
+</div>
+
+    </div>
+
+    
+<section class="section section--cite section--hang" id="bibtex">
+  <div class="wrap">
+    <h2>Citation</h2>
+    <div class="cite">
+      <button class="cite__copy" type="button" data-copy-target="bibtex-code">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copy</span>
+      </button>
+      <pre class="cite__code"><code id="bibtex-code">@article{yourname2026projectname,
+  title   = {Project Name: A Short Descriptive Subtitle},
+  author  = {Lastname, First and Coauthor, Second},
+  journal = {arXiv preprint arXiv:0000.00000},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+  <footer class="footer">
+  <div class="wrap">
+    <div class="footer__row">
+      <p class="footer__title">Project Name</p>
+      <nav class="footer__links" aria-label="Paper resources">
+        <a href="#">Paper</a>
+        <a href="#">arXiv</a>
+        <a href="#">Code</a>
+        <a href="#bibtex">BibTeX</a>
+      </nav>
+    </div>
+    <p class="footer__note">
+      Built with the <a href="https://github.com/ridmajayasundara/research-project-page" target="_blank" rel="noopener">research project page template</a>.
+      Free to use and adapt.
+    </p>
+  </div>
+</footer>
+
+
+  <div class="lightbox" id="lightbox" hidden>
+    <button class="lightbox__close" type="button" aria-label="Close image viewer"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <img class="lightbox__img" id="lightbox-img" alt="">
+  </div>
+
+  <script src="/your-repo-name/assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{%- comment -%}
+================================================================================
+ HIGHLIGHTS — a grid of short "what's new here" cards.
+
+ Define them in the front matter at the top of index.md:
+
+   highlights:
+     - title: "Direct attention objective"
+       text:  "One or two sentences. Markdown works."
+     - title: "..."
+       text:  "..."
+
+ Then place the grid anywhere in the body with:
+
+   {% include highlights.html %}
+================================================================================
+{%- endcomment -%}
+{%- assign items = include.items | default: page.highlights -%}
+{%- if items and items.size > 0 %}
+<ul class="cards">
+  {%- for h in items %}
+  <li class="card">
+    <h3 class="card__title">{{ h.title }}</h3>
+    <p class="card__text">{{ h.text | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+  </li>
+  {%- endfor %}
+</ul>
+{%- endif %}

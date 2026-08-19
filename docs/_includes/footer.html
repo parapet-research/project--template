@@ -1,0 +1,21 @@
+{%- assign p = site.project -%}
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__row">
+      <p class="footer__title">{{ p.title }}</p>
+      {%- if p.links and p.links.size > 0 %}
+      <nav class="footer__links" aria-label="Paper resources">
+        {%- for l in p.links %}
+        <a href="{{ l.url }}"{% unless l.url contains '#' %} target="_blank" rel="noopener"{% endunless %}>{{ l.label }}</a>
+        {%- endfor %}
+      </nav>
+      {%- endif %}
+    </div>
+    {%- if p.footer.template_credit %}
+    <p class="footer__note">
+      Built with the <a href="https://github.com/ridmajayasundara/research-project-page" target="_blank" rel="noopener">research project page template</a>.
+      Free to use and adapt.
+    </p>
+    {%- endif %}
+  </div>
+</footer>

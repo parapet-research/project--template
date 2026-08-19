@@ -1,0 +1,113 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+{%- assign p = site.project -%}
+{%- assign page_title = site.title -%}
+<title>{{ page_title }}</title>
+<meta name="description" content="{{ site.description }}">
+
+{%- comment -%} Sets the browser UI colour to match the page in both themes. {%- endcomment -%}
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131314" media="(prefers-color-scheme: dark)">
+
+{%- comment -%} Social / link previews. {%- endcomment -%}
+{%- if site.social_preview and site.social_preview != "" -%}
+  {%- capture preview_url -%}{{ site.social_preview | prepend: '/assets/' | absolute_url }}{%- endcapture -%}
+{%- endif -%}
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ page_title }}">
+<meta property="og:description" content="{{ site.description }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+{%- if preview_url %}
+<meta property="og:image" content="{{ preview_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ preview_url }}">
+{%- else %}
+<meta name="twitter:card" content="summary">
+{%- endif %}
+<meta name="twitter:title" content="{{ page_title }}">
+<meta name="twitter:description" content="{{ site.description }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+{%- comment -%} Structured data so Google shows this as a scholarly article. {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "headline": {{ p.title | jsonify }},
+  "description": {{ site.description | jsonify }},
+  "author": [
+    {%- for a in site.data.authors.list -%}
+    {"@type": "Person", "name": {{ a.name | jsonify }}}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]{% if preview_url %},
+  "image": {{ preview_url | jsonify }}{% endif %}
+}
+</script>
+
+{%- comment -%} Fonts. DM Sans for headings, Inter for text. {%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&display=swap">
+
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+{%- comment -%}
+  Without JavaScript the bar can never be revealed by scrolling, so fall back
+  to an ordinary sticky header that reserves its own space.
+{%- endcomment -%}
+<noscript><style>
+  .topbar { position: sticky; transform: none; opacity: 1; visibility: visible; pointer-events: auto; }
+</style></noscript>
+
+{%- comment -%}
+  Applies the saved theme before first paint so the page never flashes white
+  when a returning visitor has chosen dark mode.
+{%- endcomment -%}
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+
+{%- if site.math %}
+{%- comment -%}
+  KaTeX, pinned to an exact version so it cannot change under you.
+
+  Math written as $$ ... $$ is parsed by kramdown BEFORE markdown runs, and
+  handed to us inside .kdmath elements — untouched. That matters: markdown would
+  otherwise read the two underscores of `a_\theta \circ b_\theta` as emphasis
+  and quietly turn half your equation into italics. We render those elements
+  first, then sweep the rest of the page for anyone who wrote plain $ ... $.
+{%- endcomment -%}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+        onload="renderPageMath();"></script>
+<script>
+  function renderPageMath() {
+    document.querySelectorAll('.kdmath').forEach(function (el) {
+      var tex = el.textContent.trim().replace(/^\$\$?/, '').replace(/\$\$?$/, '');
+      try {
+        katex.render(tex, el, { displayMode: el.tagName === 'DIV', throwOnError: false });
+      } catch (e) {}
+    });
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '$', right: '$', display: false }
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      ignoredClasses: ['katex'],
+      throwOnError: false
+    });
+  }
+</script>
+{%- endif %}
+
+{%- include analytics.html %}

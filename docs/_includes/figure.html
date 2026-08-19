@@ -1,0 +1,49 @@
+{%- comment -%}
+================================================================================
+ FIGURE
+ Use from index.md:
+
+   {% include figure.html
+      src="figures/pipeline.jpg"
+      alt="Text for screen readers."
+      caption="Shown under the figure. **Markdown** works here."
+      width="page" %}
+
+ Parameters
+   src      required. Path inside assets/ , e.g. "figures/pipeline.jpg".
+            An .mp4 / .webm is rendered as a muted, looping, autoplaying video.
+   alt      strongly recommended. Leave "" only for purely decorative images.
+   caption  optional. Supports markdown and $math$.
+   width    "page" (default) fills the content column, so the figure lines up
+                   exactly with the tables and the body text
+            "text" narrower, for small diagrams that would look stretched
+            "wide" reclaims the heading column too — the widest option, worth
+                   using once or twice at most
+   plain    "true" removes the white mat and border. Use for photos that
+            already fill their frame; keep the mat for diagrams and plots.
+   pad      "true" adds breathing room inside the mat. Use for vector diagrams
+            and anything with a transparent background.
+   zoom     "false" disables click-to-enlarge.
+================================================================================
+{%- endcomment -%}
+
+{%- assign width = include.width | default: "page" -%}
+{%- assign src = include.src | prepend: '/assets/' | relative_url -%}
+{%- assign is_video = false -%}
+{%- if include.src contains '.mp4' or include.src contains '.webm' -%}{%- assign is_video = true -%}{%- endif -%}
+
+<figure class="fig fig--{{ width }}{% if include.plain == 'true' %} fig--plain{% endif %}{% if include.pad == 'true' %} fig--pad{% endif %}">
+  <div class="fig__media">
+    {%- if is_video -%}
+      <video src="{{ src }}" autoplay loop muted playsinline
+             {% if include.poster %}poster="{{ include.poster | prepend: '/assets/' | relative_url }}"{% endif %}
+             aria-label="{{ include.alt }}"></video>
+    {%- else -%}
+      <img src="{{ src }}" alt="{{ include.alt }}" loading="lazy" decoding="async"
+           {% unless include.zoom == 'false' %}data-zoomable{% endunless %}>
+    {%- endif -%}
+  </div>
+  {%- if include.caption and include.caption != "" %}
+  <figcaption>{{ include.caption | markdownify | remove: '<p>' | remove: '</p>' }}</figcaption>
+  {%- endif %}
+</figure>

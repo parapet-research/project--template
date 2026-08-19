@@ -1,0 +1,103 @@
+{%- assign p = site.project -%}
+{%- assign authors = site.data.authors -%}
+<section class="hero" id="top">
+  <div class="wrap">
+
+    {%- if p.venue and p.venue != "" %}
+    <p class="hero__venue">{{ p.venue }}</p>
+    {%- endif %}
+
+    <h1 class="hero__title">{{ p.title }}</h1>
+
+    {%- if p.tagline and p.tagline != "" %}
+    <p class="hero__tagline">{{ p.tagline | markdownify | remove: '<p>' | remove: '</p>' }}</p>
+    {%- endif %}
+
+    {%- comment -%} ---------- Authors ---------- {%- endcomment -%}
+    {%- assign has_equal = false -%}
+    {%- for a in authors.list -%}{%- if a.equal -%}{%- assign has_equal = true -%}{%- endif -%}{%- endfor -%}
+
+    {%- if authors.show_photos %}
+    <ul class="authors authors--photos">
+      {%- for a in authors.list %}
+      {%- assign parts = a.name | split: ' ' -%}
+      <li class="author">
+        {%- if a.photo and a.photo != "" -%}
+          <img class="author__photo" src="{{ a.photo | prepend: '/assets/images/authors/' | relative_url }}"
+               alt="" loading="lazy" width="88" height="88">
+        {%- else -%}
+          {%- comment -%} No photo yet: draw a monogram so the row still looks deliberate. {%- endcomment -%}
+          <span class="author__photo author__photo--initials" aria-hidden="true">{{ parts | first | slice: 0 }}{% if parts.size > 1 %}{{ parts | last | slice: 0 }}{% endif %}</span>
+        {%- endif -%}
+        <span class="author__name">
+          {%- if a.url and a.url != "" -%}
+            <a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.name }}</a>
+          {%- else -%}
+            {{ a.name }}
+          {%- endif -%}
+          {%- if a.equal %}<sup class="author__mark">*</sup>{% endif -%}
+          {%- if a.note %}<sup class="author__mark">{{ a.note }}</sup>{% endif -%}
+        </span>
+        <span class="author__affil">
+          {%- for key in a.affil -%}
+            {{ authors.affiliations[key].name }}{% unless forloop.last %} · {% endunless %}
+          {%- endfor -%}
+        </span>
+      </li>
+      {%- endfor %}
+    </ul>
+
+    {%- else %}
+    {%- comment -%} Compact, conference-style text author line with numbered affiliations. {%- endcomment -%}
+    <p class="authors authors--text">
+      {%- for a in authors.list -%}
+        {%- if a.url and a.url != "" -%}
+          <a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.name }}</a>
+        {%- else -%}
+          <span>{{ a.name }}</span>
+        {%- endif -%}
+        {%- comment -%}
+          Keep this on one line: a newline before </sup> renders as a stray
+          space between the superscript and the comma that follows it.
+        {%- endcomment -%}
+        <sup class="author__mark">{% for key in a.affil %}{% for pair in authors.affiliations %}{% if pair[0] == key %}{{ forloop.index }}{% endif %}{% endfor %}{% unless forloop.last %},{% endunless %}{% endfor %}{% if a.equal %}*{% endif %}{{ a.note }}</sup>
+        {%- unless forloop.last -%}<span class="authors__sep">, </span>{%- endunless -%}
+      {%- endfor -%}
+    </p>
+    <p class="affils">
+      {%- for pair in authors.affiliations -%}
+        <span class="affil"><sup>{{ forloop.index }}</sup>{% if pair[1].url and pair[1].url != "" %}<a href="{{ pair[1].url }}" target="_blank" rel="noopener">{{ pair[1].name }}</a>{% else %}{{ pair[1].name }}{% endif %}</span>
+      {%- endfor -%}
+    </p>
+    {%- endif %}
+
+    {%- if has_equal and authors.equal_note and authors.equal_note != "" %}
+    <p class="authors__note"><sup>*</sup>{{ authors.equal_note }}</p>
+    {%- endif %}
+
+    {%- comment -%} ---------- Link buttons ---------- {%- endcomment -%}
+    {%- if p.links and p.links.size > 0 %}
+    <div class="hero__links">
+      {%- for l in p.links %}
+      <a class="btn {% if l.primary %}btn--primary{% endif %}" href="{{ l.url }}"{% unless l.url contains '#' %} target="_blank" rel="noopener"{% endunless %}>
+        {% include icon.html name=l.icon %}<span>{{ l.label }}</span>
+      </a>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
+    {%- comment -%} ---------- Institution logos ---------- {%- endcomment -%}
+    {%- if authors.logos and authors.logos.size > 0 %}
+    <div class="hero__logos">
+      {%- for logo in authors.logos %}
+        {%- if logo.url and logo.url != "" -%}
+        <a href="{{ logo.url }}" target="_blank" rel="noopener"><img src="{{ logo.src | prepend: '/assets/images/' | relative_url }}" alt="{{ logo.alt }}" loading="lazy"></a>
+        {%- else -%}
+        <img src="{{ logo.src | prepend: '/assets/images/' | relative_url }}" alt="{{ logo.alt }}" loading="lazy">
+        {%- endif -%}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
+  </div>
+</section>

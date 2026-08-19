@@ -1,0 +1,67 @@
+# =============================================================================
+#  AUTHORS
+# =============================================================================
+#  `list`         the author line under the title
+#  `affiliations` the numbered institutions under it
+#
+#  Each author's `affil` is a LIST of keys from `affiliations` below, so an
+#  author with two institutions gets both superscripts: affil: [qut, a-star]
+#
+#  Optional per author:
+#    url    - personal page; the name becomes a link
+#    photo  - file in assets/images/authors/ , e.g. "jane-doe.jpg"
+#             Square images look best; they are cropped to a circle.
+#             Omit it and a circle with the author's initials is drawn instead,
+#             so the page never looks broken while you collect photos.
+#    equal  - true to mark with * for equal contribution
+#    note   - any other marker you want after the name, e.g. "†"
+#
+#  `show_photos` picks between the two layouts:
+#    false (default) - compact conference-style line: names side by side with
+#                      numbered affiliation superscripts, affiliations listed
+#                      underneath. Best for long author lists; photos ignored.
+#    true            - a row of circular photos, each with name and affiliation.
+#                      Authors without a `photo` get an initials monogram.
+# =============================================================================
+
+show_photos: false
+
+# Shown under the author photos when at least one author has `equal: true`.
+equal_note: "Equal contribution"
+
+list:
+  - name: "First Author"
+    url: "https://example.com"
+    photo: ""                    # e.g. "first-author.jpg"
+    affil: [uni-a]
+    equal: true
+
+  - name: "Second Author"
+    url: ""
+    photo: ""
+    affil: [uni-a, uni-b]
+    equal: true
+
+  - name: "Third Author"
+    url: ""
+    photo: ""
+    affil: [uni-b]
+
+  - name: "Senior Author"
+    url: ""
+    photo: ""
+    affil: [uni-a]
+
+affiliations:
+  uni-a:
+    name: "Your University"
+    url: "https://example.edu"
+  uni-b:
+    name: "Partner Institute"
+    url: "https://example.org"
+
+# Optional institution logos in a row under the affiliations.
+# Put SVG or PNG files in assets/images/logos/. Delete the entries to hide.
+logos: []
+  # - { src: "logos/university.svg", alt: "Your University", url: "https://example.edu" }
+  # - { src: "logos/institute.png",  alt: "Partner Institute", url: "https://example.org" }

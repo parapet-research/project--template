@@ -1,0 +1,119 @@
+
+# =============================================================================
+#  PROJECT PAGE CONFIG  —  edit this file first.
+# =============================================================================
+
+
+# --- Site basics -------------------------------------------------------------
+# Shown in the browser tab and in search results.
+title: "Project Name: A Short Descriptive Subtitle"
+description: "One or two sentences describing the paper. Used by search engines and for link previews on X, LinkedIn and Slack."
+
+# Your GitHub Pages URL, split into origin + path:
+#   Project site   https://<user>.github.io/<repo>/   url: https://<user>.github.io   baseurl: "/<repo>"
+#   User site      https://<user>.github.io/          url: https://<user>.github.io   baseurl: ""
+#   Custom domain  https://example.com/               url: https://example.com        baseurl: ""
+url: "https://your-github-username.github.io"
+baseurl: "/your-repo-name"
+
+# Image used when the page is shared on social media. 1200x630 works best.
+# Lives in assets/ , so this points at assets/figures/social-preview.jpg
+social_preview: "figures/social-preview.jpg"
+
+
+# --- Features ----------------------------------------------------------------
+# Render LaTeX with KaTeX.  Inline: $ ... $   Display: $$ ... $$
+# Set to false if your page has no equations (saves ~300 KB of downloads).
+math: true
+
+# Google Analytics 4 measurement id, e.g. "G-XXXXXXXXXX". Empty = disabled.
+google_analytics: ""
+
+
+# --- The page itself ---------------------------------------------------------
+project:
+
+  # Small label above the title: the venue, or "Preprint", or "" to hide it.
+  venue: "Preprint · 2026"
+
+  # The headline. Keep it short; the full paper title can go in `tagline`.
+  title: "Project Name"
+
+  # One sentence under the title. The elevator pitch, not the abstract.
+  tagline: "A single clear sentence saying what the paper does and why it matters."
+
+  # Buttons under the author list.
+  # icon: paper · arxiv · github · video · data · poster · slides · quote · link
+  # Give exactly one `primary: true` to get the filled accent style.
+  links:
+    - label: "Paper"
+      url: "#"
+      icon: "paper"
+      primary: true
+    - label: "arXiv"
+      url: "#"
+      icon: "arxiv"
+    - label: "Code"
+      url: "#"
+      icon: "github"
+    - label: "BibTeX"
+      url: "#bibtex"
+      icon: "quote"
+
+  # Sticky top-bar navigation. Each `id` must match a heading id in index.md,
+  # which you set with the `{#some-id}` suffix on a `##` heading.
+  # Five items or fewer keeps it on one line on a laptop.
+  nav:
+    - { label: "Overview",  id: "overview" }
+    - { label: "Method",    id: "method" }
+    - { label: "Results",   id: "results" }
+    - { label: "Ablations", id: "ablations" }
+    - { label: "BibTeX",    id: "bibtex" }
+
+  # Teaser shown full width directly under the hero.
+  # Put the file in assets/figures/. Use "" for src to hide the teaser.
+  # An .mp4 here is embedded as a muted, looping, autoplaying video instead.
+  teaser:
+    src: "figures/teaser.jpg"
+    alt: "Describe the figure for screen readers and for when the image fails to load."
+    caption: "A short caption. **Bold the takeaway** so a skimming reader gets it in one line."
+
+  # Citation block at the bottom of the page. Leave as "" to hide it.
+  bibtex: |
+    @article{yourname2026projectname,
+      title   = {Project Name: A Short Descriptive Subtitle},
+      author  = {Lastname, First and Coauthor, Second},
+      journal = {arXiv preprint arXiv:0000.00000},
+      year    = {2026}
+    }
+
+  # Optional paragraph shown just above the citation block. "" to hide.
+  acknowledgements: ""
+
+  footer:
+    # A "built from the ... template" credit line. Keeping it is appreciated
+    # but entirely optional — set to false to remove it.
+    template_credit: false
+
+
+# --- Jekyll internals (safe to ignore) ---------------------------------------
+markdown: kramdown
+kramdown:
+  input: GFM                 # GitHub-flavoured markdown: tables, fenced code blocks
+  hard_wrap: false
+  math_engine: null          # KaTeX handles the math instead of kramdown
+  syntax_highlighter: rouge
+
+exclude:
+  - README.md
+  - GUIDE.md          # the template's own docs, not part of your site
+  - GUIDE.pdf
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - .jekyll-cache
+
+defaults:
+  - scope: { path: "" }
+    values: { layout: "project" }

@@ -1,0 +1,24 @@
+{%- assign p = site.project -%}
+
+{%- if p.acknowledgements and p.acknowledgements != "" %}
+<section class="section section--hang" id="acknowledgements">
+  <div class="wrap">
+    <h2>Acknowledgements</h2>
+    <div>{{ p.acknowledgements | markdownify }}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if p.bibtex and p.bibtex != "" %}
+<section class="section section--cite section--hang" id="bibtex">
+  <div class="wrap">
+    <h2>Citation</h2>
+    <div class="cite">
+      <button class="cite__copy" type="button" data-copy-target="bibtex-code">
+        {% include icon.html name="copy" %}<span>Copy</span>
+      </button>
+      <pre class="cite__code"><code id="bibtex-code">{{ p.bibtex | strip }}</code></pre>
+    </div>
+  </div>
+</section>
+{%- endif %}

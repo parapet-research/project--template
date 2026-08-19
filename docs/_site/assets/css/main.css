@@ -1,0 +1,1028 @@
+/* =============================================================================
+   Research project page — design system
+   -----------------------------------------------------------------------------
+   Plain CSS, no build step. Everything is driven by the custom properties in
+   :root, so retheming the page usually means editing only the TOKENS block.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- TOKENS -- */
+:root {
+  /* Type */
+  --font-display: "DM Sans", "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-text: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Colour — light. Redefined for dark further down; never set a colour only
+     inside a media query or the other theme will inherit the host page's. */
+  --bg: #ffffff;
+  --surface: #f7f9fa;
+  --surface-2: #eceff1;
+  --line: #e0e3e6;
+  --line-2: #cdd2d6;
+
+  --ink: #1f1f1f;
+  --ink-2: #474b4e;
+  --ink-3: #6b7075;
+
+  --accent: #0b57d0;
+  --accent-hover: #1a73e8;
+  --accent-soft: #e8f0fe;
+  --accent-ink: #ffffff;
+
+  /* Filled buttons are ink-coloured rather than accent-coloured, so links and
+     the nav highlight stay blue while the call to action reads as neutral.
+     Inverts in dark mode: white pill, dark label. */
+  --btn-bg: #1f1f1f;
+  --btn-bg-hover: #3c4043;
+  --btn-ink: #ffffff;
+
+  /* The mat behind figures. Kept light in both themes so that diagrams and
+     plots exported from LaTeX with black text stay readable in dark mode. */
+  --figure-mat: #ffffff;
+
+  /* Shape */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .04), 0 1px 3px rgba(0, 0, 0, .04);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, .06), 0 8px 24px rgba(0, 0, 0, .06);
+
+  /* Layout */
+  --page: 1140px;        /* outer content width: hero, teaser, footer */
+  --measure: 760px;      /* text width before the two-column layout kicks in */
+  --gutter: 24px;
+  --topbar-h: 60px;
+
+  /* Hanging headings (screens >= 1024px). The body splits into a narrow
+     heading column and a wider content column holding everything else.
+     --head-col + the remaining space = --page, so the content column works
+     out at roughly 836px at the default page width. */
+  --head-col: 240px;
+  --head-gap: 2rem;
+  --section-gap: clamp(3.5rem, 2rem + 5vw, 6rem);
+
+  --fig-narrow: 640px;   /* width="text" figures, for small diagrams */
+}
+
+:root:not([data-theme="light"]) {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131314;
+    --surface: #1c1d1f;
+    --surface-2: #26282a;
+    --line: #303235;
+    --line-2: #45484b;
+
+    --ink: #e8eaed;
+    --ink-2: #bdc1c6;
+    --ink-3: #969b9f;
+
+    --accent: #a8c7fa;
+    --accent-hover: #c6dcff;
+    --accent-soft: #1c2b45;
+    --accent-ink: #062e6f;
+
+    --btn-bg: #e8eaed;
+    --btn-bg-hover: #ffffff;
+    --btn-ink: #131314;
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #131314;
+  --surface: #1c1d1f;
+  --surface-2: #26282a;
+  --line: #303235;
+  --line-2: #45484b;
+
+  --ink: #e8eaed;
+  --ink-2: #bdc1c6;
+  --ink-3: #969b9f;
+
+  --accent: #a8c7fa;
+  --accent-hover: #c6dcff;
+  --accent-soft: #1c2b45;
+  --accent-ink: #062e6f;
+
+  --btn-bg: #e8eaed;
+  --btn-bg-hover: #ffffff;
+  --btn-ink: #131314;
+
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ BASE -- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  font-feature-settings: "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 900px) {
+  body { font-size: 1.125rem; }
+}
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+}
+
+sup { font-size: .68em; line-height: 0; }
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 4rem 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: .75rem 1.25rem;
+  border-radius: 0 0 var(--r-md) 0;
+}
+.skip-link:focus { left: 0; }
+
+/* --------------------------------------------------------------- LAYOUT -- */
+.wrap {
+  width: 100%;
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 700px) { :root { --gutter: 32px; } }
+
+.measure { max-width: var(--measure); }
+
+.section { padding-block: clamp(3.5rem, 2rem + 6vw, 6.5rem); }
+.section--cite { padding-bottom: clamp(4rem, 3rem + 4vw, 7rem); }
+
+/* --------------------------------------------------------------- TOPBAR -- */
+/* Fixed rather than sticky, so it takes up no room in the layout and the page
+   can begin at the very top of the viewport. It is hidden on load and slides
+   in once you scroll (see .is-hidden and main.js). */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg); /* fallback for browsers without color-mix() */
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(1.6) blur(14px);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
+  border-bottom: 1px solid transparent;
+  transition: transform .28s ease, opacity .28s ease,
+              border-color .2s ease, background .2s ease;
+}
+.topbar.is-scrolled { border-bottom-color: var(--line); }
+
+/* `visibility` is delayed until the slide-out finishes, so the bar animates
+   away properly but is then genuinely gone — not an invisible tab stop. */
+.topbar.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: transform .28s ease, opacity .28s ease, visibility 0s linear .28s;
+}
+
+.topbar__inner {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.topbar__brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .9375rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 42vw;
+  flex-shrink: 1;
+}
+.topbar__brand:hover { color: var(--ink); text-decoration: none; }
+
+.topbar__nav {
+  display: none;
+  align-items: center;
+  gap: .25rem;
+  margin-left: auto;
+}
+.topbar__nav a {
+  color: var(--ink-2);
+  font-size: .875rem;
+  font-weight: 500;
+  padding: .4rem .7rem;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.topbar__nav a:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+  text-decoration: none;
+}
+.topbar__nav a.is-active { color: var(--accent); background: var(--accent-soft); }
+
+@media (min-width: 900px) { .topbar__nav { display: flex; } }
+
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: auto;
+}
+@media (min-width: 900px) { .topbar__actions { margin-left: 1rem; } }
+
+.topbar__cta { display: none; }
+@media (min-width: 1100px) { .topbar__cta { display: inline-flex; } }
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+  padding: 0;
+}
+.icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+.icon-btn .ico { width: 19px; height: 19px; }
+
+.icon-btn__moon { display: none; }
+:root[data-theme="dark"] .icon-btn__sun { display: none; }
+:root[data-theme="dark"] .icon-btn__moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .icon-btn__sun { display: none; }
+  :root:not([data-theme="light"]) .icon-btn__moon { display: block; }
+}
+
+.topbar__menu { display: inline-grid; }
+@media (min-width: 900px) { .topbar__menu { display: none; } }
+
+/* Mobile section menu */
+.topbar__nav.is-open {
+  display: flex;
+  position: absolute;
+  top: var(--topbar-h);
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: .5rem var(--gutter) 1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-2);
+}
+.topbar__nav.is-open a { padding: .7rem .5rem; border-radius: var(--r-sm); }
+
+.topbar__progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 0;
+  background: var(--accent);
+  transition: width .1s linear;
+}
+
+/* ----------------------------------------------------------------- HERO -- */
+.hero {
+  padding-top: clamp(1.75rem, 1rem + 2.5vw, 3.25rem);
+  padding-bottom: clamp(1.5rem, 1rem + 1.5vw, 2rem);
+}
+
+.hero__venue {
+  font-family: var(--font-display);
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.25rem;
+}
+
+.hero__title {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  max-width: 20ch;
+  margin-bottom: 1.25rem;
+}
+
+.hero__tagline {
+  font-size: clamp(1.0625rem, .95rem + .6vw, 1.4375rem);
+  line-height: 1.5;
+  color: var(--ink-2);
+  max-width: 62ch;
+  margin: 0 0 2.5rem;
+  font-weight: 400;
+}
+
+/* ---- Authors ---- */
+.authors { list-style: none; padding: 0; margin: 0 0 1.25rem; }
+
+/* A grid rather than a wrapping flex row, so that with many authors the
+   columns line up instead of going ragged. */
+.authors--photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(290px, 100%), 1fr));
+  gap: 1.25rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.author {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: .75rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.author__photo {
+  grid-row: 1 / 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+}
+
+.author__photo--initials {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: .875rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--ink-3);
+  background: var(--surface-2);
+}
+
+.author__name {
+  font-size: .9375rem;
+  font-weight: 600;
+  color: var(--ink);
+  align-self: end;
+  line-height: 1.3;
+}
+.author__name a { color: var(--ink); }
+.author__name a:hover { color: var(--accent); text-decoration: none; }
+
+.author__affil {
+  font-size: .8125rem;
+  color: var(--ink-3);
+  align-self: start;
+  line-height: 1.35;
+}
+
+.author__mark { color: var(--ink-3); font-weight: 500; }
+
+/* Text-only variant. No width cap: a list of names reads fine across the full
+   content width, and capping it wastes vertical space on extra wrapped lines. */
+.authors--text {
+  font-size: 1.0625rem;
+  color: var(--ink);
+  max-width: none;
+  line-height: 1.75;
+}
+.authors--text a { color: var(--ink); font-weight: 500; }
+.authors--text a:hover { color: var(--accent); text-decoration: none; }
+
+/* Keep each name on one line, so "A V Subramanyam" never splits mid-name.
+   The separator is deliberately left breakable — it is where lines wrap. */
+.authors--text > span:not(.authors__sep),
+.authors--text > a { white-space: nowrap; }
+
+/* Flex-wrap rather than inline text: the Liquid emits the spans with no
+   whitespace between them, so an inline layout has no break opportunity and
+   the line runs off the screen on narrow viewports. Flex wraps between items
+   regardless. `max-width: 100%` lets a single over-long affiliation wrap
+   internally instead of overflowing. */
+.affils {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1.5rem;
+  font-size: .9375rem;
+  color: var(--ink-3);
+  max-width: none;
+  margin: .375rem 0 1.25rem;
+  line-height: 1.7;
+}
+.affil { flex: 0 0 auto; max-width: 100%; }
+.affils a { color: var(--ink-3); }
+
+.authors__note {
+  font-size: .8125rem;
+  color: var(--ink-3);
+  margin: 0 0 1.5rem;
+}
+
+/* ---- Buttons ---- */
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .625rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .625rem 1.25rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: .9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.btn:hover {
+  background: var(--surface);
+  border-color: var(--line-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+.btn:active { transform: translateY(1px); }
+.btn .ico { width: 17px; height: 17px; flex: none; color: var(--ink-3); }
+.btn:hover .ico { color: var(--ink-2); }
+
+.btn--primary {
+  background: var(--btn-bg);
+  border-color: var(--btn-bg);
+  color: var(--btn-ink);
+}
+.btn--primary:hover {
+  background: var(--btn-bg-hover);
+  border-color: var(--btn-bg-hover);
+  color: var(--btn-ink);
+}
+.btn--primary .ico,
+.btn--primary:hover .ico { color: currentColor; }
+
+.btn--sm { padding: .375rem .875rem; font-size: .8125rem; }
+
+/* ---- Institution logos ---- */
+.hero__logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2.75rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.hero__logos img { height: 34px; width: auto; opacity: .75; }
+:root[data-theme="dark"] .hero__logos img { filter: invert(1) grayscale(1) brightness(1.7); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero__logos img { filter: invert(1) grayscale(1) brightness(1.7); }
+}
+
+/* --------------------------------------------------------------- TEASER -- */
+/* No top padding, and a small figure margin: the gap above the teaser is
+   otherwise the sum of three separate spacings and grows to ~130px. */
+.teaser { padding-block: 0 clamp(1rem, .5rem + 2vw, 2rem); }
+.teaser .fig { margin-top: 1rem; }
+
+/* A tall or near-square teaser would run past the fold at full content width
+   and push the abstract off the first screen, so cap its height to the
+   viewport. The frame shrinks to hug the image rather than leaving empty side
+   bands, and the whole thing is centred. Click-to-enlarge still opens it at
+   full size. Raise or remove the max-height if your teaser is wide and short. */
+.teaser .fig__media {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.teaser .fig__media img {
+  width: auto;
+  max-width: 100%;
+  max-height: 76vh;
+}
+/* Centred image, so the caption is centred with it rather than stranded on the
+   far left. The rest of the page keeps its left-aligned spine. */
+.teaser figcaption {
+  max-width: 68ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------- PROSE -- */
+/* A full-bleed grid. Text sits in a readable column that shares its LEFT EDGE
+   with the hero and every other element on the page — the single alignment
+   spine the layout hangs off. Figures, tables and card grids opt into the
+   wider tracks by class. */
+.prose {
+  --page-inner: calc(var(--page) - var(--gutter) * 2);
+  display: grid;
+  align-items: start;
+  grid-template-columns:
+    [full-start] minmax(var(--gutter), 1fr)
+    [page-start head-start text-start] min(var(--measure), 100% - var(--gutter) * 2) [text-end head-end page-end]
+    minmax(var(--gutter), 1fr) [full-end];
+  padding-bottom: 2rem;
+}
+
+.prose > * { grid-column: text; }
+
+/* Narrow variant for small diagrams: sits at the left of the text column
+   rather than being stretched to fill it. */
+.prose > .fig--text > * { max-width: var(--fig-narrow); }
+
+.prose h2 {
+  font-size: clamp(1.625rem, 1.2rem + 1.5vw, 2.375rem);
+  letter-spacing: -0.025em;
+  margin-top: clamp(3.5rem, 2rem + 5vw, 6rem);
+  margin-bottom: 1.25rem;
+  scroll-margin-top: calc(var(--topbar-h) + 24px);
+}
+.prose > h2:first-child { margin-top: clamp(2rem, 1rem + 3vw, 3.5rem); }
+
+/* ---------------------------------------------------- HANGING HEADINGS -- */
+/* On wide screens the body becomes two columns: section headings hang in a
+   narrow left column, and everything else — text, tables, figures, cards —
+   shares a single right column with one left and one right edge.
+ *
+ * This needs no wrapper elements in your markdown. Grid auto-placement puts
+ * the h2 (column `head`) beside the FIRST item that follows it (column
+ * `text`), then stacks the rest below it with the left column left empty.
+ *
+ * Section spacing is applied as padding-top to BOTH the heading and the
+ * element next to it, so their first lines sit on the same baseline. Using
+ * margin-top on the heading alone would push it down inside its own row and
+ * leave it hanging below the paragraph it belongs to. */
+@media (min-width: 1024px) {
+  .prose {
+    /* Note: adjacent line-name brackets such as `[head-end] [text-start]` are
+       invalid CSS. Names sitting between two tracks share one bracket. */
+    grid-template-columns:
+      [full-start] minmax(var(--gutter), 1fr)
+      [page-start head-start] minmax(0, var(--head-col))
+      [head-end text-start] minmax(0, calc(var(--page-inner) - var(--head-col))) [text-end page-end]
+      minmax(var(--gutter), 1fr) [full-end];
+  }
+
+  .prose > h2 {
+    grid-column: head;
+    padding-right: var(--head-gap);
+    font-size: clamp(1.375rem, 1.05rem + .8vw, 1.75rem);
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: var(--section-gap);
+  }
+  .prose > h2 + * { padding-top: var(--section-gap); }
+
+  /* The margin-top: 0 above is out-specificity'd by the base
+     `.prose > h2:first-child` rule, so it has to be repeated here. */
+  .prose > h2:first-child { margin-top: 0; }
+  .prose > h2:first-child,
+  .prose > h2:first-child + * { padding-top: clamp(2rem, 1rem + 3vw, 3.5rem); }
+
+  /* The one breakout: reclaims the heading column as well. */
+  .prose > .fig--wide { grid-column: page; }
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: 2.75rem;
+  margin-bottom: .75rem;
+  scroll-margin-top: calc(var(--topbar-h) + 24px);
+}
+
+.prose h4 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: .5rem;
+  color: var(--ink-2);
+}
+
+.prose p { margin: 0 0 1.25rem; color: var(--ink-2); }
+.prose p strong { color: var(--ink); font-weight: 600; }
+
+.prose ul, .prose ol { margin: 0 0 1.5rem; padding-left: 1.35rem; color: var(--ink-2); }
+.prose li { margin-bottom: .5rem; }
+.prose li::marker { color: var(--ink-3); }
+
+.prose blockquote {
+  margin: 2rem 0;
+  padding: .25rem 0 .25rem 1.5rem;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: .875em;
+  background: var(--surface-2);
+  padding: .15em .4em;
+  border-radius: 5px;
+}
+.prose pre {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: .875rem;
+  line-height: 1.6;
+}
+.prose pre code { background: none; padding: 0; }
+
+/* Caption paragraph: write `{: .caption}` on the line after a table. */
+.caption {
+  font-size: .875rem !important;
+  line-height: 1.6;
+  color: var(--ink-3) !important;
+  margin-top: -1rem !important;
+  margin-bottom: 2.5rem !important;
+}
+.caption strong { color: var(--ink-2) !important; }
+
+/* --------------------------------------------------------------- FIGURE -- */
+.fig { margin: 2.5rem 0 3rem; }
+
+.fig__media {
+  background: var(--figure-mat);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  line-height: 0;
+}
+.fig__media img, .fig__media video { width: 100%; }
+
+.fig--pad .fig__media { padding: clamp(1rem, .5rem + 2vw, 2.25rem); }
+
+.fig--plain .fig__media {
+  background: none;
+  border: 0;
+  border-radius: var(--r-lg);
+}
+
+.fig figcaption {
+  margin-top: .875rem;
+  font-size: .875rem;
+  line-height: 1.6;
+  color: var(--ink-3);
+  max-width: 90ch;
+}
+.fig figcaption strong { color: var(--ink-2); font-weight: 600; }
+
+[data-zoomable] { cursor: zoom-in; }
+
+/* ---------------------------------------------------------------- TABLE -- */
+.table-wrap {
+  overflow-x: auto;
+  margin: 2rem 0 2.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9375rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: .75rem 1.125rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.table-wrap thead th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .8125rem;
+  letter-spacing: .02em;
+  color: var(--ink-2);
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+.table-wrap tbody td { color: var(--ink-2); }
+.table-wrap tbody tr:last-child td { border-bottom: 0; }
+.table-wrap tbody tr:hover td { background: var(--surface); }
+
+.table-wrap tbody td strong,
+.table-wrap tbody th strong { color: var(--ink); font-weight: 600; }
+
+/* First column reads as a row label */
+.table-wrap tbody td:first-child,
+.table-wrap tbody th:first-child {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* Add class `.t-ours` to a <tr> to highlight your own method's row */
+.table-wrap tbody tr.t-ours td { background: var(--accent-soft); }
+.table-wrap tbody tr.t-ours:hover td { background: var(--accent-soft); }
+.table-wrap tbody tr.t-ours td { color: var(--ink); }
+
+/* Group separator: add class `.t-sep` to a <tr> */
+.table-wrap tbody tr.t-sep td { border-top: 1px solid var(--line-2); }
+
+/* ---------------------------------------------------------------- CARDS -- */
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 2.5rem 0 3rem;
+  display: grid;
+  gap: 1rem;
+  /* 280px means four cards land as a tidy 2x2 in the content column rather
+     than 3 + 1 with an orphan on its own row. */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 1.5rem 1.5rem 1.625rem;
+  margin: 0;
+  transition: border-color .18s ease, transform .18s ease;
+}
+.card:hover { border-color: var(--line-2); transform: translateY(-2px); }
+
+/* Scoped to .cards so these beat the generic `.prose h3` / `.prose p` rules,
+   which would otherwise add section-sized margins inside the cards. */
+.cards .card__title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 .5rem;
+}
+
+.cards .card__text {
+  margin: 0;
+  font-size: .9375rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+/* ---------------------------------------------------------------- STATS -- */
+.stats {
+  display: grid;
+  gap: 1.5rem 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin: 2.5rem 0 3rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.stat { display: flex; flex-direction: column; gap: .25rem; }
+
+.stat__value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.4rem + 2.2vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.stat__label {
+  font-size: .9375rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.4;
+  margin-top: .5rem;
+}
+
+.stat__note { font-size: .8125rem; color: var(--ink-3); line-height: 1.4; }
+
+/* -------------------------------------------------------------- CALLOUT -- */
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-md);
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  font-size: .9375rem;
+  color: var(--ink-2);
+}
+.callout > :last-child { margin-bottom: 0; }
+
+/* ----------------------------------------------------------------- CITE -- */
+.section--cite { background: var(--surface); border-top: 1px solid var(--line); }
+.section--cite h2 {
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  margin-bottom: 1.25rem;
+}
+
+/* Match the hanging-heading layout of the body above. */
+@media (min-width: 1024px) {
+  .section--hang .wrap {
+    display: grid;
+    align-items: start;
+    grid-template-columns: minmax(0, var(--head-col)) minmax(0, 1fr);
+  }
+  .section--hang h2 {
+    padding-right: var(--head-gap);
+    font-size: clamp(1.375rem, 1.05rem + .8vw, 1.75rem);
+    margin-bottom: 0;
+  }
+}
+
+.cite {
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+
+.cite__code {
+  margin: 0;
+  padding: 1.375rem 1.5rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: .8125rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+  white-space: pre;
+}
+
+.cite__copy {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  color: var(--ink-2);
+  font-family: var(--font-display);
+  font-size: .75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.cite__copy:hover { background: var(--surface); color: var(--ink); }
+.cite__copy .ico { width: 14px; height: 14px; }
+.cite__copy.is-done { color: var(--accent); border-color: var(--accent); }
+
+/* --------------------------------------------------------------- FOOTER -- */
+.footer {
+  border-top: 1px solid var(--line);
+  padding-block: 3rem 4rem;
+  background: var(--bg);
+}
+
+.footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.footer__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .9375rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.footer__links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.footer__links a { font-size: .875rem; color: var(--ink-2); }
+.footer__links a:hover { color: var(--accent); }
+
+.footer__note {
+  margin: 2rem 0 0;
+  font-size: .8125rem;
+  color: var(--ink-3);
+}
+
+/* ------------------------------------------------------------- LIGHTBOX -- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 3vmin;
+  background: rgba(12, 12, 13, .94);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+.lightbox[hidden] { display: none; }
+.lightbox.is-open { opacity: 1; }
+
+.lightbox__img {
+  max-width: 96vw;
+  max-height: 92vh;
+  width: auto;
+  border-radius: var(--r-md);
+  background: #fff;
+  cursor: zoom-out;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: max(1rem, 3vmin);
+  right: max(1rem, 3vmin);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+  cursor: pointer;
+}
+.lightbox__close:hover { background: rgba(255, 255, 255, .22); }
+.lightbox__close .ico { width: 22px; height: 22px; }
+
+/* ------------------------------------------------------------ UTILITIES -- */
+.katex { font-size: 1.02em; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding-block: .5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media print {
+  .topbar, .footer__note, .cite__copy, .lightbox, .icon-btn { display: none !important; }
+  body { font-size: 10.5pt; }
+  .fig, .table-wrap, .card { break-inside: avoid; }
+  a { color: inherit; text-decoration: underline; }
+}

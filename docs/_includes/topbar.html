@@ -1,0 +1,41 @@
+{%- assign p = site.project -%}
+{%- comment -%}
+  Starts hidden so the page opens on the title and teaser; main.js reveals it
+  once you scroll. The class is set here rather than by JS so there is no
+  flash of a visible bar on load. head.html carries a <noscript> fallback.
+{%- endcomment -%}
+<header class="topbar is-hidden" id="topbar">
+  <div class="topbar__inner">
+
+    <a class="topbar__brand" href="#top">
+      <span class="topbar__brand-text">{{ p.title }}</span>
+    </a>
+
+    <nav class="topbar__nav" aria-label="Sections">
+      {%- for item in p.nav %}
+      <a href="#{{ item.id }}" data-nav-target="{{ item.id }}">{{ item.label }}</a>
+      {%- endfor %}
+    </nav>
+
+    <div class="topbar__actions">
+      {%- comment -%} The first primary link doubles as the top-bar call to action. {%- endcomment -%}
+      {%- for l in p.links -%}
+        {%- if l.primary and l.url != "#" -%}
+          <a class="btn btn--sm btn--primary topbar__cta" href="{{ l.url }}"{% unless l.url contains '#' %} target="_blank" rel="noopener"{% endunless %}>{{ l.label }}</a>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch between light and dark theme">
+        <span class="icon-btn__sun">{% include icon.html name="sun" %}</span>
+        <span class="icon-btn__moon">{% include icon.html name="moon" %}</span>
+      </button>
+
+      <button class="icon-btn topbar__menu" id="menu-toggle" type="button" aria-label="Open section menu" aria-expanded="false">
+        {% include icon.html name="menu" %}
+      </button>
+    </div>
+
+  </div>
+  <div class="topbar__progress" id="progress"></div>
+</header>

@@ -1,0 +1,30 @@
+{%- comment -%}
+================================================================================
+ STATS — a row of headline numbers.
+
+ Define them in the front matter at the top of index.md:
+
+   stats:
+     - value: "0.97"
+       label: "mAP on DETR-R50"
+       note:  "down from 42.1 clean"
+     - value: "4x"
+       label: "stronger than prior best"
+
+ Then place the row anywhere in the body with:
+
+   {% include stats.html %}
+================================================================================
+{%- endcomment -%}
+{%- assign items = include.items | default: page.stats -%}
+{%- if items and items.size > 0 %}
+<div class="stats">
+  {%- for s in items %}
+  <div class="stat">
+    <span class="stat__value">{{ s.value }}</span>
+    <span class="stat__label">{{ s.label }}</span>
+    {%- if s.note and s.note != "" %}<span class="stat__note">{{ s.note }}</span>{% endif %}
+  </div>
+  {%- endfor %}
+</div>
+{%- endif %}
